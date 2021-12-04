@@ -22,7 +22,9 @@ def list_of_sums_in_sliding_window(list_of_numbers, window_size):
 
 
 def main():
-    with open("/home/suc4hi/Dokumente/AdventOfCode2021/day1/input.txt", "r") as f:
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+
+    with open("/home/eileen/workspace/adventofcode2021/day1/input.txt", "r") as f:
         depth_list = [line.rstrip() for line in f.readlines()]
     logger.info(f"Part 1 answer is '{count_next_larger_than_current(depth_list)}'")  # 1722
 

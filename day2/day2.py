@@ -42,9 +42,12 @@ def compute_horizontal_and_depth_movements_complicated(list_of_commands):
 
 
 def main():
+    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+
     list_of_commands = []
-    with open("/home/suc4hi/Dokumente/AdventOfCode2021/day2/input.txt", "r") as f:
+    with open("/home/eileen/workspace/adventofcode2021/day2/input.txt", "r") as f:
         list_of_commands = f.read().splitlines()
+
     horizontal_sum, depth_sum = compute_horizontal_and_depth_movements(list_of_commands)
     logger.info(f"Part 1 answer is '{horizontal_sum*depth_sum}'")  # 1962940
 
