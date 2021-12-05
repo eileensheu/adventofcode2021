@@ -4,6 +4,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def _parse_input(input_file_path):
+    logger.debug(f"Input file: {input_file_path}")
+    with open(input_file_path, "r") as f:
+        parsed_input = [line.rstrip() for line in f.readlines()]
+    return parsed_input
+
+
 def rotate(list_of_numbers, n):
     return list_of_numbers[n:] + list_of_numbers[:n]
 
@@ -22,10 +29,14 @@ def list_of_sums_in_sliding_window(list_of_numbers, window_size):
 
 
 def main():
-    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+    logging.basicConfig(
+        format="%(asctime)s | %(levelname)-7s | %(message)s",
+        datefmt="%H:%M:%S",
+        level=logging.INFO,
+    )
 
-    with open("/home/eileen/workspace/adventofcode2021/day1/input.txt", "r") as f:
-        depth_list = [line.rstrip() for line in f.readlines()]
+    depth_list = _parse_input("/home/eileen/workspace/adventofcode2021/day1/input.txt")
+
     logger.info(f"Part 1 answer is '{count_next_larger_than_current(depth_list)}'")  # 1722
 
     sliding_window_list = list_of_sums_in_sliding_window(depth_list, 3)

@@ -4,6 +4,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def _parse_input(input_file_path):
+    logger.debug(f"Input file: {input_file_path}")
+    with open(input_file_path, "r") as f:
+        parsed_input = f.read().splitlines()
+    return parsed_input
+
+
 def get_gamma_rate(diagnostic_report):
     diagnostic_report_transpose = list(map(list, zip(*diagnostic_report)))
     gamma_rate_str_list = ["0" if nst_digit.count("0") > nst_digit.count("1") else "1" for nst_digit in diagnostic_report_transpose]
@@ -64,10 +71,13 @@ def get_co2_scrubber_rating(diagnostic_report):
 
 
 def main():
-    logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
+    logging.basicConfig(
+        format="%(asctime)s | %(levelname)-7s | %(message)s",
+        datefmt="%H:%M:%S",
+        level=logging.INFO,
+    )
 
-    with open("/home/eileen/workspace/adventofcode2021/day3/input.txt", "r") as f:
-        diagnostic_report = f.read().splitlines()
+    diagnostic_report = _parse_input("/home/eileen/workspace/adventofcode2021/day3/input.txt")
 
     gamma_rate = get_gamma_rate(diagnostic_report)
     epsilon_rate = get_epsilon_rate(diagnostic_report)
