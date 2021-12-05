@@ -25,12 +25,13 @@ class ConsideredDirection(Enum):
     hori_verti_diagonal = 2
 
 
-def add_1_to_point(points_dict, point):
+def _add_1_to_point(points_dict, point):
     if point not in points_dict:
         points_dict[point] = 1
     else:
         points_dict[point] += 1
     return points_dict
+
 
 def _get_points_of_vents(
         lines_of_vents,
@@ -47,13 +48,13 @@ def _get_points_of_vents(
         if xa == xb:
             for y in range(min(ya, yb), max(ya, yb)+1):
                 point = f"{xa},{y}"
-                points_of_vents = add_1_to_point(points_of_vents, point)
+                points_of_vents = _add_1_to_point(points_of_vents, point)
 
         # horizontal line; line y=Y
         elif ya == yb:
             for x in range(min(xa, xb), max(xa, xb)+1):
                 point = f"{x},{ya}"
-                points_of_vents = add_1_to_point(points_of_vents, point)
+                points_of_vents = _add_1_to_point(points_of_vents, point)
 
         # diagonal line
         elif (considered_direction == ConsideredDirection.hori_verti_diagonal) and \
@@ -61,7 +62,7 @@ def _get_points_of_vents(
             y = min(ya, yb)
             for x in range(min(xa, xb), max(xa, xb)+1):
                 point = f"{x},{y}"
-                points_of_vents = add_1_to_point(points_of_vents, point)
+                points_of_vents = _add_1_to_point(points_of_vents, point)
                 y += 1
 
         # diagonal line
@@ -70,7 +71,7 @@ def _get_points_of_vents(
             y = max(ya, yb)
             for x in range(min(xa, xb), max(xa, xb)+1):
                 point = f"{x},{y}"
-                points_of_vents = add_1_to_point(points_of_vents, point)
+                points_of_vents = _add_1_to_point(points_of_vents, point)
                 y -= 1
         else:
             continue
