@@ -1,5 +1,6 @@
 
 import logging
+from enum import Enum
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ def _parse_input(input_file_path):
 
     logger.debug(f"Drawn_numbers: {drawn_numbers}")
     logger.debug(f"Boards: {boards}")
-    return (drawn_numbers, boards)
+    return drawn_numbers, boards
 
 
 def initialize_markboards(boards):
@@ -36,34 +37,47 @@ def initialize_markboards(boards):
     return markboards
 
 
-def _mark_drawn_number(drawn_number, boards, markboards):
-    for board_idx, board in enumerate(boards):
-            for row_idx, row in enumerate(board):
-                for ele_idx, ele in enumerate(row):
-                    if drawn_number == ele:
-                        markboards[board_idx][row_idx][ele_idx] = True
-    return (boards, markboards)
+def _mark_drawn_number(drawn_number, board, markboard):
+    for row_idx, row in enumerate(board):
+        for ele_idx, ele in enumerate(row):
+            if drawn_number == ele:
+                markboard[row_idx][ele_idx] = True
+    return markboard
 
 
-def _bingo(markboard):
-    for row in markboard:
+def _bingo(_markboard):
+    for row in _markboard:
         if False not in row:
             return True
     return False
 
 
 def play_bingo(drawn_numbers, boards, markboards):
+    bingo_drawn_numbers = []
+    bingo_board_ids = []
+    bingo_markboards = []
+    should_break_now = False
     for drawn_number in drawn_numbers:
-        boards, markboards = _mark_drawn_number(drawn_number, boards, markboards)
         logger.debug(f"=== drawn_number: {drawn_number} ===")
         for markboard_idx, markboard in enumerate(markboards):
             logger.debug(f"--- markboard_idx: {markboard_idx} ---")
-            logger.debug(markboard)
+            if markboard_idx in bingo_board_ids:
+                continue
+            markboard = _mark_drawn_number(drawn_number, boards[markboard_idx], markboard)
             markboard_transpose = list(map(list, zip(*markboard)))
-            logger.debug(markboard_transpose)
             if _bingo(markboard) or _bingo(markboard_transpose):
-                return (drawn_number, markboard_idx)
-    raise Exception("None of the boards would bingo with the given drawn numbers.")
+                logger.debug(markboard)
+                bingo_drawn_numbers.append(drawn_number)
+                bingo_board_ids.append(markboard_idx)
+                bingo_markboards.append(markboard)
+                if len(bingo_board_ids) == len(boards):
+                    should_break_now = True
+                    break
+        if should_break_now:
+            break
+    logger.debug(f"bingo_drawn_numbers: {bingo_drawn_numbers}")
+    logger.debug(f"bingo_board_ids: {bingo_board_ids}")
+    return bingo_drawn_numbers, bingo_board_ids, bingo_markboards
 
 
 def count_score(final_drawn_number, board, markboard):
@@ -74,6 +88,7 @@ def count_score(final_drawn_number, board, markboard):
                 sum_of_unmarked_numbers += board[row_idx][ele_idx]
     return sum_of_unmarked_numbers*final_drawn_number
 
+
 def main():
     logging.basicConfig(
         format="%(asctime)s | %(levelname)-7s | %(message)s",
@@ -83,12 +98,25 @@ def main():
     drawn_numbers, boards = _parse_input("/home/eileen/workspace/adventofcode2021/day4/input.txt")
 
     markboards = initialize_markboards(boards)
-    final_drawn_number, bingo_board_idx = play_bingo(drawn_numbers, boards, markboards)
+    bingo_drawn_numbers, bingo_board_ids, bingo_markboards = play_bingo(drawn_numbers, boards, markboards)
 
-    score = count_score(final_drawn_number, boards[bingo_board_idx], markboards[bingo_board_idx])
-    logger.info(f"Part 1 answer is '{score}'")  # 44088
+    first_bingo_drawn_numbers = bingo_drawn_numbers[0]
+    first_bingo_board_id = bingo_board_ids[0]
+    first_bingo_markboard = bingo_markboards[0]
+    logger.debug(f"first_bingo_markboard: {first_bingo_markboard}")
+    logger.debug(f"first_bingo_board: {boards[first_bingo_board_id]}")
 
-    # logger.info(f"Part 2 answer is '{life_support_rating}'")  # 
+    score_1 = count_score(first_bingo_drawn_numbers, boards[first_bingo_board_id], first_bingo_markboard)
+    logger.info(f"Part 1 answer is '{score_1}'")  # 44088
+
+    last_bingo_drawn_numbers = bingo_drawn_numbers[-1]
+    last_bingo_board_id = bingo_board_ids[-1]
+    last_bingo_markboard = bingo_markboards[-1]
+    logger.debug(f"last_bingo_markboard: {last_bingo_markboard}")
+    logger.debug(f"last_bingo_board: {boards[last_bingo_board_id]}")
+
+    score_2 = count_score(last_bingo_drawn_numbers, boards[last_bingo_board_id], last_bingo_markboard)
+    logger.info(f"Part 2 answer is '{score_2}'")  # 23670
 
 
 if __name__ == "__main__":
