@@ -21,14 +21,14 @@ def _parse_commands(list_of_commands):
     forward = _steps_sum_in_direction(list_of_parsed_commands, "forward")
     down = _steps_sum_in_direction(list_of_parsed_commands, "down")
     up = _steps_sum_in_direction(list_of_parsed_commands, "up")
-    return (forward, down, up)
+    return forward, down, up
 
 
 def compute_horizontal_and_depth_movements(list_of_commands):
     forward, down, up = _parse_commands(list_of_commands)
     horizontal_sum = forward
     depth_sum = down - up
-    return (horizontal_sum, depth_sum)
+    return horizontal_sum, depth_sum
 
 
 def compute_horizontal_and_depth_movements_complicated(list_of_commands):
@@ -45,7 +45,7 @@ def compute_horizontal_and_depth_movements_complicated(list_of_commands):
         elif direction_cmd == "forward":
             horizontal_sum += steps
             depth_sum += _aim*steps
-    return (horizontal_sum, depth_sum)
+    return horizontal_sum, depth_sum
 
 
 def main():
