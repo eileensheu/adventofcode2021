@@ -27,7 +27,7 @@ def main():
         datefmt="%H:%M:%S",
         level=logging.INFO,
     )
-    list_of_lanternfish_ages = _parse_input("/home/suc4hi/workspace/adventofcode2021/day6/input.txt")
+    list_of_lanternfish_ages = _parse_input("/home/eileen/workspace/adventofcode2021/day6/input.txt")
     logger.debug(f"Initial amount: {len(list_of_lanternfish_ages)}")
 
     # lanternfish_amount_after_80_days = lanternfish_amount_after_n_days(list_of_lanternfish_ages, 80)
