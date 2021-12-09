@@ -1,4 +1,3 @@
-
 import logging
 
 logger = logging.getLogger(__name__)
@@ -9,11 +8,11 @@ def _parse_input(input_file_path):
     with open(input_file_path, "r") as f:
         diagnostic_report = f.read().splitlines()
 
-    drawn_numbers = list(map(int, diagnostic_report[0].split(',')))
+    drawn_numbers = list(map(int, diagnostic_report[0].split(",")))
     boards = []
     _line = 2
     while _line < len(diagnostic_report):
-        _board_rows = diagnostic_report[_line:_line+5]
+        _board_rows = diagnostic_report[_line : _line + 5]
         _board = [list(map(int, _board_row.split())) for _board_row in _board_rows]
         boards.append(_board)
         _line += 6
@@ -62,7 +61,9 @@ def play_bingo(drawn_numbers, boards, markboards):
             logger.debug(f"--- markboard_idx: {markboard_idx} ---")
             if markboard_idx in bingo_board_ids:
                 continue
-            markboard = _mark_drawn_number(drawn_number, boards[markboard_idx], markboard)
+            markboard = _mark_drawn_number(
+                drawn_number, boards[markboard_idx], markboard
+            )
             markboard_transpose = list(map(list, zip(*markboard)))
             if _bingo(markboard) or _bingo(markboard_transpose):
                 logger.debug(markboard)
@@ -85,7 +86,7 @@ def count_score(final_drawn_number, board, markboard):
         for ele_idx, ele in enumerate(row):
             if markboard[row_idx][ele_idx] == False:
                 sum_of_unmarked_numbers += board[row_idx][ele_idx]
-    return sum_of_unmarked_numbers*final_drawn_number
+    return sum_of_unmarked_numbers * final_drawn_number
 
 
 def main():
@@ -94,10 +95,14 @@ def main():
         datefmt="%H:%M:%S",
         level=logging.INFO,
     )
-    drawn_numbers, boards = _parse_input("/home/eileen/workspace/adventofcode2021/day4/input.txt")
+    drawn_numbers, boards = _parse_input(
+        "/home/eileen/workspace/adventofcode2021/day4/input.txt"
+    )
 
     markboards = initialize_markboards(boards)
-    bingo_drawn_numbers, bingo_board_ids, bingo_markboards = play_bingo(drawn_numbers, boards, markboards)
+    bingo_drawn_numbers, bingo_board_ids, bingo_markboards = play_bingo(
+        drawn_numbers, boards, markboards
+    )
 
     first_bingo_drawn_numbers = bingo_drawn_numbers[0]
     first_bingo_board_id = bingo_board_ids[0]
@@ -105,7 +110,9 @@ def main():
     logger.debug(f"first_bingo_markboard: {first_bingo_markboard}")
     logger.debug(f"first_bingo_board: {boards[first_bingo_board_id]}")
 
-    score_1 = count_score(first_bingo_drawn_numbers, boards[first_bingo_board_id], first_bingo_markboard)
+    score_1 = count_score(
+        first_bingo_drawn_numbers, boards[first_bingo_board_id], first_bingo_markboard
+    )
     logger.info(f"Part 1 answer is '{score_1}'")  # 44088
 
     last_bingo_drawn_numbers = bingo_drawn_numbers[-1]
@@ -114,7 +121,9 @@ def main():
     logger.debug(f"last_bingo_markboard: {last_bingo_markboard}")
     logger.debug(f"last_bingo_board: {boards[last_bingo_board_id]}")
 
-    score_2 = count_score(last_bingo_drawn_numbers, boards[last_bingo_board_id], last_bingo_markboard)
+    score_2 = count_score(
+        last_bingo_drawn_numbers, boards[last_bingo_board_id], last_bingo_markboard
+    )
     logger.info(f"Part 2 answer is '{score_2}'")  # 23670
 
 

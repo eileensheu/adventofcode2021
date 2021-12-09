@@ -1,4 +1,3 @@
-
 import logging
 
 logger = logging.getLogger(__name__)
@@ -12,7 +11,10 @@ def _parse_input(input_file_path):
 
 
 def _steps_sum_in_direction(list_of_parsed_commands, direction):
-    list_of_steps = [int(steps_cmd) if direction_cmd == direction else 0 for direction_cmd, steps_cmd in list_of_parsed_commands]
+    list_of_steps = [
+        int(steps_cmd) if direction_cmd == direction else 0
+        for direction_cmd, steps_cmd in list_of_parsed_commands
+    ]
     return sum(list_of_steps)
 
 
@@ -44,7 +46,7 @@ def compute_horizontal_and_depth_movements_complicated(list_of_commands):
             _aim -= steps
         elif direction_cmd == "forward":
             horizontal_sum += steps
-            depth_sum += _aim*steps
+            depth_sum += _aim * steps
     return horizontal_sum, depth_sum
 
 
@@ -55,12 +57,16 @@ def main():
         level=logging.INFO,
     )
 
-    list_of_commands = _parse_input("/home/eileen/workspace/adventofcode2021/day2/input.txt")
+    list_of_commands = _parse_input(
+        "/home/eileen/workspace/adventofcode2021/day2/input.txt"
+    )
 
     horizontal_sum, depth_sum = compute_horizontal_and_depth_movements(list_of_commands)
     logger.info(f"Part 1 answer is '{horizontal_sum*depth_sum}'")  # 1962940
 
-    horizontal_sum, depth_sum = compute_horizontal_and_depth_movements_complicated(list_of_commands)
+    horizontal_sum, depth_sum = compute_horizontal_and_depth_movements_complicated(
+        list_of_commands
+    )
     logger.info(f"Part 2 answer is '{horizontal_sum*depth_sum}'")  # 1813664422
 
 
