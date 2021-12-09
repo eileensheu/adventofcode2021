@@ -15,8 +15,7 @@ def lanternfish_amount_after_n_days(list_of_lanternfish_ages, n):
     logger.debug(f"Initial state : {list_of_lanternfish_ages}")
     for i in range(n):
         list_of_lanternfish_ages = [6 if lanternfish_age == 0 else lanternfish_age-1 for lanternfish_age in list_of_lanternfish_ages] + \
-                                   [8 for _ in range(list_of_lanternfish_ages.count(0))]
-
+                                   [8] * list_of_lanternfish_ages.count(0)
         logger.debug(f"After {i+1} day(s): {list_of_lanternfish_ages}")
     return len(list_of_lanternfish_ages)
 
