@@ -1,5 +1,4 @@
 import logging
-import statistics
 
 logger = logging.getLogger(__name__)
 
