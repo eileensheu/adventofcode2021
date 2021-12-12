@@ -23,22 +23,13 @@ def _parse_input(input_file_path):
 
 
 def initialize_markboards(boards):
-    markboards = []
-    for board in boards:
-        markboard = []
-        for row in board:
-            markboard_row = []
-            for ele in row:
-                markboard_row.append(False)
-            markboard.append(markboard_row)
-        markboards.append(markboard)
-    return markboards
+    return [[[False] * len(row) for row in board] for board in boards]
 
 
 def _mark_drawn_number(drawn_number, board, markboard):
-    for row_idx, row in enumerate(board):
-        for ele_idx, ele in enumerate(row):
-            if drawn_number == ele:
+    for row_idx, (row_board, row_markboard) in enumerate(zip(board, markboard)):
+        for ele_idx, (ele_board, ele_markboard) in enumerate(zip(row_board, row_markboard)):
+            if drawn_number == ele_board:
                 markboard[row_idx][ele_idx] = True
     return markboard
 
@@ -83,7 +74,7 @@ def play_bingo(drawn_numbers, boards, markboards):
 def count_score(final_drawn_number, board, markboard):
     sum_of_unmarked_numbers = 0
     for row_idx, row in enumerate(board):
-        for ele_idx, ele in enumerate(row):
+        for ele_idx in range(len(row)):
             if markboard[row_idx][ele_idx] == False:
                 sum_of_unmarked_numbers += board[row_idx][ele_idx]
     return sum_of_unmarked_numbers * final_drawn_number
