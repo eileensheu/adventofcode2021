@@ -1,3 +1,4 @@
+from collections import namedtuple
 import logging
 
 logger = logging.getLogger(__name__)
@@ -17,73 +18,41 @@ def _is_local_min(x, neighbors_list):
         False
 
 
+Coord = namedtuple('Coord', ['r', 'c'])
+
+
 def generate_neighbormap(heightmap):
     neighbormap = []
     for row_idx, row in enumerate(heightmap):
         neighbormap.append([[]]*len(row))
         for col_idx in range(len(row)):
+
+            neighbor_directions = {
+                "right": Coord(r=row_idx, c=col_idx+1),
+                "left":  Coord(r=row_idx, c=col_idx-1),
+                "below": Coord(r=row_idx+1, c=col_idx),
+                "above": Coord(r=row_idx-1, c=col_idx),
+            }
+
             # First row
             if row_idx == 0:
-                # first col
-                if col_idx == 0:
-                    neighbor = [
-                        heightmap[row_idx][col_idx+1], # right
-                        heightmap[row_idx+1][col_idx], # below
-                    ]
-                # last col
-                elif col_idx == len(row)-1:
-                    neighbor = [
-                        heightmap[row_idx][col_idx-1], # left
-                        heightmap[row_idx+1][col_idx], # below
-                    ]
-                else:
-                    neighbor = [
-                        heightmap[row_idx][col_idx+1], # right
-                        heightmap[row_idx][col_idx-1], # left
-                        heightmap[row_idx+1][col_idx], # below
-                    ]
+                neighbor_directions.pop("above")
             # Last row
             elif row_idx == len(heightmap)-1:
-                # first col
-                if col_idx == 0:
-                    neighbor = [
-                        heightmap[row_idx][col_idx+1], # right
-                        heightmap[row_idx-1][col_idx], # above
-                    ]
-                # last col
-                elif col_idx == len(row)-1:
-                    neighbor = [
-                        heightmap[row_idx][col_idx-1], # left
-                        heightmap[row_idx-1][col_idx], # above
-                    ]
-                else:
-                    neighbor = [
-                        heightmap[row_idx][col_idx+1], # right
-                        heightmap[row_idx][col_idx-1], # left
-                        heightmap[row_idx-1][col_idx], # above
-                    ]
+                neighbor_directions.pop("below")
             else:
-                # first col
-                if col_idx == 0:
-                    neighbor = [
-                        heightmap[row_idx][col_idx+1], # right
-                        heightmap[row_idx-1][col_idx], # above
-                        heightmap[row_idx+1][col_idx], # below
-                    ]
-                # last col
-                elif col_idx == len(row)-1:
-                    neighbor = [
-                        heightmap[row_idx][col_idx-1], # left
-                        heightmap[row_idx-1][col_idx], # above
-                        heightmap[row_idx+1][col_idx], # below
-                    ]
-                else:
-                    neighbor = [
-                        heightmap[row_idx][col_idx+1], # right
-                        heightmap[row_idx][col_idx-1], # left
-                        heightmap[row_idx-1][col_idx], # above
-                        heightmap[row_idx+1][col_idx], # below
-                    ]
+                pass
+
+            # First col
+            if col_idx == 0:
+                neighbor_directions.pop("left")
+            # Last col
+            elif col_idx == len(row)-1:
+                neighbor_directions.pop("right")
+            else:
+                pass
+
+            neighbor = [heightmap[coord.r][coord.c] for coord in neighbor_directions.values()]
             neighbormap[row_idx][col_idx] = neighbor
     return neighbormap
 
@@ -118,6 +87,8 @@ def main():
     local_mins, local_mins_coord = find_local_min_and_its_coordinates(heightmap, neighbormap)
     risk_level_sum = compute_risk_level_sum_from_local_mins(local_mins)
     logger.info(f"Part 1 answer is '{risk_level_sum}'")  # 550
+
+    # find_basins(local_mins_coord)
 
 
     # logger.info(f"Part 2 answer is '{}'")  #
