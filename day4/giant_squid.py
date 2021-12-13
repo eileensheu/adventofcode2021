@@ -28,7 +28,9 @@ def initialize_markboards(boards):
 
 def _mark_drawn_number(drawn_number, board, markboard):
     for row_idx, (row_board, row_markboard) in enumerate(zip(board, markboard)):
-        for ele_idx, (ele_board, ele_markboard) in enumerate(zip(row_board, row_markboard)):
+        for ele_idx, (ele_board, ele_markboard) in enumerate(
+            zip(row_board, row_markboard)
+        ):
             if drawn_number == ele_board:
                 markboard[row_idx][ele_idx] = True
     return markboard

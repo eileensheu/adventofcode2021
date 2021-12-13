@@ -53,7 +53,9 @@ def generate_unique_signal_patterns_to_digits_dict(unique_signal_patterns_list):
         elif length == 6:
             len6_patterns.append(unique_signal_pattern)
         else:
-            raise Exception(f"No known unique signal pattern would have length '{length}'.")
+            raise Exception(
+                f"No known unique signal pattern would have length '{length}'."
+            )
 
     logger.debug(unique_signal_patterns_to_digits_dict)
 
@@ -75,7 +77,10 @@ def generate_unique_signal_patterns_to_digits_dict(unique_signal_patterns_list):
         for idx, len5_pattern in enumerate(len5_patterns):
             if all(one_ele in len5_pattern for one_ele in one_compositions):
                 unique_signal_patterns_to_digits_dict["3"] = len5_patterns.pop(idx)
-            elif all(five_candidate_ele in nine_compositions for five_candidate_ele in len5_pattern):
+            elif all(
+                five_candidate_ele in nine_compositions
+                for five_candidate_ele in len5_pattern
+            ):
                 unique_signal_patterns_to_digits_dict["5"] = len5_patterns.pop(idx)
             elif len(len5_patterns) == 1:
                 unique_signal_patterns_to_digits_dict["2"] = len5_patterns.pop(idx)
@@ -99,10 +104,15 @@ def _map_strlist_to_int(str_list):
 def decode_and_sum(ten_digits, four_digits_output):
     digits_list = []
     for ten_digits_ele, four_digits_output_ele in zip(ten_digits, four_digits_output):
-        unique_signal_patterns_to_digits_dict = generate_unique_signal_patterns_to_digits_dict(ten_digits_ele)
+        unique_signal_patterns_to_digits_dict = generate_unique_signal_patterns_to_digits_dict(
+            ten_digits_ele
+        )
         digits_list.append(
             _map_strlist_to_int(
-                [_decode(ele, unique_signal_patterns_to_digits_dict) for ele in four_digits_output_ele]
+                [
+                    _decode(ele, unique_signal_patterns_to_digits_dict)
+                    for ele in four_digits_output_ele
+                ]
             )
         )
     return sum(digits_list)
