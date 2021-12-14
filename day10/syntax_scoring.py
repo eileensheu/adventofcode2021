@@ -12,6 +12,7 @@ def _parse_input(input_file_path):
 
 
 closers_openers_dict = {")": "(", "]": "[", "}": "{", ">": "<"}
+openers_closers_dict = {v: k for k, v in closers_openers_dict.items()}
 
 
 def remove_char_from_str_at_idx(str_obj, idx):
@@ -23,7 +24,7 @@ Inconsistency = namedtuple("Inconsistency", ["expected", "found"])
 
 def find_corrupted_and_incomplete_lines(syntax_lines):
     corrupted_lines = {}
-    incomplete_lines = []
+    incomplete_lines = {}
     for syntax_line in syntax_lines:
         logger.debug(syntax_line)
         syntax_line_processed = syntax_line
@@ -49,6 +50,8 @@ def find_corrupted_and_incomplete_lines(syntax_lines):
                         )
                         logger.debug(syntax_line_processed)
                         break
+
+                    # is a corrupted line
                     else:
                         corrupted_lines[syntax_line] = Inconsistency(
                             expected=syntax_line_processed[idx - 1],
@@ -59,16 +62,27 @@ def find_corrupted_and_incomplete_lines(syntax_lines):
                         )
                         is_a_corrupted_line = True
                         break
+
                 else:
                     raise Exception("Unknown syntax detected: '{char}'")
-            if idx == len(syntax_line_processed) - 1 and not is_a_corrupted_line:
-                incomplete_lines.append(syntax_line)
-                logger.debug(f"incomplete_lines")
+
+            # is a incomplete line
+            else:
+                completion_string = "".join(
+                    openers_closers_dict[char]
+                    for char in reversed(syntax_line_processed)
+                )
+                incomplete_lines[syntax_line] = completion_string
+                logger.debug(
+                    f"incomplete_line: completion string '{completion_string}'"
+                )
                 break
+
     return corrupted_lines, incomplete_lines
 
 
-syntax_score_table = {")": 3, "]": 57, "}": 1197, ">": 25137}
+syntax_error_score_table = {")": 3, "]": 57, "}": 1197, ">": 25137}
+completion_string_char_score_table = {")": 1, "]": 2, "}": 3, ">": 4}
 
 
 def compute_syntax_error_score(inconsistencies_list):
@@ -76,9 +90,19 @@ def compute_syntax_error_score(inconsistencies_list):
         inconsistency.found for inconsistency in inconsistencies_list
     ]
     score = 0
-    for char, weight in syntax_score_table.items():
+    for char, weight in syntax_error_score_table.items():
         score += weight * found_inconsistencies_list.count(char)
     return score
+
+
+def compute_completion_strings_scores(completion_strings):
+    completion_strings_scores = []
+    for string in completion_strings:
+        score = 0
+        for char in string:
+            score = score * 5 + completion_string_char_score_table[char]
+        completion_strings_scores.append(score)
+    return completion_strings_scores
 
 
 def main():
@@ -98,7 +122,16 @@ def main():
     score = compute_syntax_error_score(list(corrupted_lines.values()))
     logger.info(f"Part 1 answer is '{score}'")  # 296535
 
-    # logger.info(f"Part 2 answer is '{}'")  #
+    completion_strings_scores = compute_completion_strings_scores(
+        list(incomplete_lines.values())
+    )
+    sorted_completion_strings_scores, mid_idx = (
+        sorted(completion_strings_scores),
+        int((len(completion_strings_scores) - 1) / 2),
+    )
+    logger.info(
+        f"Part 2 answer is '{sorted_completion_strings_scores[mid_idx]}'"
+    )  # 4245130838
 
 
 if __name__ == "__main__":
