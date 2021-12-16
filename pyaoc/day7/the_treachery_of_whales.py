@@ -47,7 +47,7 @@ def main():
         level=logging.INFO,
     )
     horizontal_positions = _parse_input(
-        "/home/eileen/workspace/adventofcode2021/day7/input.txt"
+        "/home/eileen/workspace/adventofcode2021/pyaoc/day7/input.txt"
     )
 
     least_fuel = get_least_fuel(horizontal_positions)

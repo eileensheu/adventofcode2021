@@ -1,0 +1,4 @@
+# This file contains dependencies from within our workspace which
+# should be pip-installed by default. The paths are relative to
+# the current directory.
+-e .

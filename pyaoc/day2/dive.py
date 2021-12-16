@@ -58,7 +58,7 @@ def main():
     )
 
     list_of_commands = _parse_input(
-        "/home/eileen/workspace/adventofcode2021/day2/input.txt"
+        "/home/eileen/workspace/adventofcode2021/pyaoc/day2/input.txt"
     )
 
     horizontal_sum, depth_sum = compute_horizontal_and_depth_movements(list_of_commands)

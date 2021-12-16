@@ -1,5 +1,6 @@
-from collections import namedtuple
+
 from numpy import prod
+from pyaoc.utils.map_utils import Coord, get_valid_neighbor_coords
 import logging
 
 logger = logging.getLogger(__name__)
@@ -17,37 +18,6 @@ def _is_local_min(x, neighbors_list):
         return True
     else:
         False
-
-
-Coord = namedtuple("Coord", ["r", "c"])
-
-
-def get_valid_neighbor_coords(row_idx, col_idx, len_row, len_col):
-    neighbor_directions = {
-        "right": Coord(r=row_idx, c=col_idx + 1),
-        "left": Coord(r=row_idx, c=col_idx - 1),
-        "below": Coord(r=row_idx + 1, c=col_idx),
-        "above": Coord(r=row_idx - 1, c=col_idx),
-    }
-
-    # First row
-    if row_idx == 0:
-        neighbor_directions.pop("above")
-    # Last row
-    elif row_idx == len_row - 1:
-        neighbor_directions.pop("below")
-    else:
-        pass
-
-    # First col
-    if col_idx == 0:
-        neighbor_directions.pop("left")
-    # Last col
-    elif col_idx == len_col - 1:
-        neighbor_directions.pop("right")
-    else:
-        pass
-    return list(neighbor_directions.values())
 
 
 def generate_neighbormap(heightmap):
@@ -132,7 +102,7 @@ def main():
         level=logging.INFO,
     )
 
-    heightmap = _parse_input("/home/eileen/workspace/adventofcode2021/day9/input.txt")
+    heightmap = _parse_input("/home/eileen/workspace/adventofcode2021/pyaoc/day9/input.txt")
 
     neighbormap = generate_neighbormap(heightmap)
     local_mins, local_mins_coord = find_local_min_and_its_coordinates(

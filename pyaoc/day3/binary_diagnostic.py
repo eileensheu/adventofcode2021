@@ -100,7 +100,7 @@ def main():
     )
 
     diagnostic_report = _parse_input(
-        "/home/eileen/workspace/adventofcode2021/day3/input.txt"
+        "/home/eileen/workspace/adventofcode2021/pyaoc/day3/input.txt"
     )
 
     gamma_rate = get_gamma_rate(diagnostic_report)

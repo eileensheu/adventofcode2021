@@ -100,7 +100,7 @@ def main():
         level=logging.INFO,
     )
     lines_of_vents = _parse_input(
-        "/home/eileen/workspace/adventofcode2021/day5/input.txt"
+        "/home/eileen/workspace/adventofcode2021/pyaoc/day5/input.txt"
     )
 
     count_1 = count_points_where_at_least_two_lines_overlap(

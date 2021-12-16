@@ -39,7 +39,7 @@ def main():
         level=logging.INFO,
     )
 
-    depth_list = _parse_input("/home/eileen/workspace/adventofcode2021/day1/input.txt")
+    depth_list = _parse_input("/home/eileen/workspace/adventofcode2021/pyaoc/day1/input.txt")
 
     logger.info(
         f"Part 1 answer is '{count_next_larger_than_current(depth_list)}'"

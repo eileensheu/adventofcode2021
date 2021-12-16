@@ -113,7 +113,7 @@ def main():
     )
 
     syntax_lines = _parse_input(
-        "/home/eileen/workspace/adventofcode2021/day10/input.txt"
+        "/home/eileen/workspace/adventofcode2021/pyaoc/day10/input.txt"
     )
     corrupted_lines, incomplete_lines = find_corrupted_and_incomplete_lines(
         syntax_lines

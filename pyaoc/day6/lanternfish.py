@@ -47,7 +47,7 @@ def main():
         level=logging.INFO,
     )
     list_of_lanternfish_ages = _parse_input(
-        "/home/eileen/workspace/adventofcode2021/day6/input.txt"
+        "/home/eileen/workspace/adventofcode2021/pyaoc/day6/input.txt"
     )
     logger.debug(f"Initial amount: {len(list_of_lanternfish_ages)}")
 

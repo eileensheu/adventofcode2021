@@ -89,7 +89,7 @@ def main():
         level=logging.INFO,
     )
     drawn_numbers, boards = _parse_input(
-        "/home/eileen/workspace/adventofcode2021/day4/input.txt"
+        "/home/eileen/workspace/adventofcode2021/pyaoc/day4/input.txt"
     )
 
     markboards = initialize_markboards(boards)

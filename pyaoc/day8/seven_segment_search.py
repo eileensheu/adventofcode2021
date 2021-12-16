@@ -125,7 +125,7 @@ def main():
         level=logging.INFO,
     )
     ten_digits, four_digits_output = _parse_input(
-        "/home/eileen/workspace/adventofcode2021/day8/input.txt"
+        "/home/eileen/workspace/adventofcode2021/pyaoc/day8/input.txt"
     )
 
     instances_of_digits = count_unique_number_of_segments_instances_of_digits(
